@@ -37,7 +37,6 @@ public class MqttConfig {
     @Bean
     public IMqttClient mqttClient() throws Exception {
         instance = new MqttClient(host, MQTT_PUBLISHER_ID + userName);
-        connect();
         return instance;
     }
 

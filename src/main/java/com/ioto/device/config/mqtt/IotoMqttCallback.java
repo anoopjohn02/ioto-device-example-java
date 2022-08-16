@@ -20,13 +20,7 @@ public class IotoMqttCallback implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable throwable) {
-        log.info("Mqtt Connection Lost...Reconnecting");
-        while (!mqttConfig.connected()){
-            try{
-                mqttConfig.connect();
-            } catch (Exception ex){}
-        }
-        log.info("Mqtt Connected");
+        log.info("Mqtt Connection Lost...");
     }
 
     @Override

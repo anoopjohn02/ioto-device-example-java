@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Profile("mqtt")
-@Service("mqttService")
+@Service("mqttGateway")
 public class MqttGateway implements IotoGateway {
 
     private final String MESSAGE_URL = "app/message";
