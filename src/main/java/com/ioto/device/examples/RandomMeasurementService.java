@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Slf4j
 @Service
 public class RandomMeasurementService {
@@ -19,7 +21,7 @@ public class RandomMeasurementService {
     @Scheduled(cron = "0 0 0-23 ? * *") // run every hour
     public void sendEnergyMeasurement(){
         try{
-
+            int energy = getRandonNumbers(500, 1000);
         } catch (Exception ex){
             log.error("Error while Sending Energy Measurement ", ex);
         }
@@ -28,9 +30,15 @@ public class RandomMeasurementService {
     @Scheduled(cron = "0 0/30 * * * ?") // run every 30 min
     public void sendVoltageMeasurement(){
         try{
-
+            int voltage = getRandonNumbers(150, 250);
         } catch (Exception ex){
             log.error("Error while Sending Voltage Measurement ", ex);
         }
+    }
+
+    private int getRandonNumbers(int low, int high){
+        Random random = new Random();
+        int result = random.nextInt(high-low) + low;
+        return result;
     }
 }
