@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @Service
@@ -29,8 +30,9 @@ public class RandomMeasurementService {
     private String deviceId;
 
     @Scheduled(cron = "0 0 0-23 ? * *") // run every hour
-    public void sendEnergyMeasurement(){
-        try{
+    public void sendEnergyMeasurement() {
+        try {
+            int energy = getRandonNumbers(500, 1000);
             Measurement measurement = new Measurement();
             measurement.setDeviceId(deviceId);
             measurement.setEnd(new Date());
@@ -42,26 +44,32 @@ public class RandomMeasurementService {
             measurement.setType("ENERGY_CONSUMPTION");
             measurementService.send(List.of(measurement));
 
-        } catch (Exception ex){
+        } catch (Exception ex) {
             log.error("Error while Sending Energy Measurement ", ex);
         }
     }
 
     @Scheduled(cron = "0 0/30 * * * ?") // run every 30 min
-    public void sendVoltageMeasurement(){
-        try{
-
-        } catch (Exception ex){
+    public void sendVoltageMeasurement() {
+        try {
+            int voltage = getRandonNumbers(150, 250);
+        } catch (Exception ex) {
             log.error("Error while Sending Voltage Measurement ", ex);
         }
     }
 
-    private ZonedDateTime getStartDate(int minute){
+    private ZonedDateTime getStartDate(int minute) {
         ZonedDateTime now = LocalDateTime.now().atZone(ZoneId.systemDefault());
-        if(now.getMinute() >= minute){
+        if (now.getMinute() >= minute) {
             return now.withMinute(minute);
         } else {
             return now.withMinute(0);
         }
+    }
+
+    private int getRandonNumbers(int low, int high) {
+        Random random = new Random();
+        int result = random.nextInt(high - low) + low;
+        return result;
     }
 }
