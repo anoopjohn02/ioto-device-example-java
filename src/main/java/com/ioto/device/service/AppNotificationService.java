@@ -17,12 +17,8 @@ public class AppNotificationService<M extends Device>  {
 
     private static final Logger logger = LoggerFactory.getLogger(AppNotificationService.class);
 
-    private NotificationWrapper notificationWrapper = new NotificationWrapper();
-
-    public void sendNotification(Alert alert, Device device) throws Exception {
-        if(notificationWrapper.isReadyToSent(alert)) {
-            logger.info("Sending notification {} to {}", alert.getKey(), device.getMacAddress());
-            deviceService.sendAlert(device.getMacAddress(), alert);
-        }
+    public void sendAlert(Alert alert, Device device) throws Exception {
+        logger.info("Sending notification {} to {}", alert.getKey(), device.getMacAddress());
+        deviceService.sendAlert(device.getMacAddress(), alert);
     }
 }

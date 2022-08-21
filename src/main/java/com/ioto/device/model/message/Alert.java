@@ -8,6 +8,7 @@ import java.util.Map;
 
 @Data
 public class Alert{
+    private String id;
     private String uId;
     private String deviceId;
     private String type;

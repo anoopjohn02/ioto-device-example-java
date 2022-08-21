@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,14 +31,13 @@ public class RandomMeasurementService {
     @Scheduled(cron = "0 0 0-23 ? * *") // run every hour
     public void sendEnergyMeasurement() {
         try {
-            int energy = getRandonNumbers(500, 1000);
+            int energy = getRandomNumbers(500, 1000);
             Measurement measurement = new Measurement();
             measurement.setDeviceId(deviceId);
             measurement.setEnd(new Date());
             measurement.setStart(Date.from(getStartDate(60).toInstant()));
-            measurement.setSwitchId("SWITCH01");
             measurement.setMetadata(new HashMap());
-            measurement.setValue(value);
+            measurement.setValue(energy);
             measurement.setUnit("Wh");
             measurement.setType("ENERGY_CONSUMPTION");
             measurementService.send(List.of(measurement));
@@ -52,7 +50,16 @@ public class RandomMeasurementService {
     @Scheduled(cron = "0 0/30 * * * ?") // run every 30 min
     public void sendVoltageMeasurement() {
         try {
-            int voltage = getRandonNumbers(150, 250);
+            int voltage = getRandomNumbers(150, 250);
+            Measurement measurement = new Measurement();
+            measurement.setDeviceId(deviceId);
+            measurement.setEnd(new Date());
+            measurement.setStart(Date.from(getStartDate(30).toInstant()));
+            measurement.setMetadata(new HashMap());
+            measurement.setValue(voltage);
+            measurement.setUnit("Wh");
+            measurement.setType("VOLTAGE_USAGE");
+            measurementService.send(List.of(measurement));
         } catch (Exception ex) {
             log.error("Error while Sending Voltage Measurement ", ex);
         }
@@ -67,7 +74,7 @@ public class RandomMeasurementService {
         }
     }
 
-    private int getRandonNumbers(int low, int high) {
+    private int getRandomNumbers(int low, int high) {
         Random random = new Random();
         int result = random.nextInt(high - low) + low;
         return result;
