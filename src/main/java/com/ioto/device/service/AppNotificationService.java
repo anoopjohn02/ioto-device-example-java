@@ -1,7 +1,6 @@
 package com.ioto.device.service;
 
 import com.ioto.device.model.Device;
-import com.ioto.device.model.NotificationWrapper;
 import com.ioto.device.model.message.Alert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

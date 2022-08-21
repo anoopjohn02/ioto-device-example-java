@@ -1,11 +1,21 @@
 package com.ioto.device.examples;
 
+import com.ioto.device.model.Measurement;
 import com.ioto.device.service.MeasurementService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -15,10 +25,22 @@ public class RandomMeasurementService {
     @Qualifier("measurementService")
     private MeasurementService measurementService;
 
+    @Value("${deviceId}")
+    private String deviceId;
 
     @Scheduled(cron = "0 0 0-23 ? * *") // run every hour
     public void sendEnergyMeasurement(){
         try{
+            Measurement measurement = new Measurement();
+            measurement.setDeviceId(deviceId);
+            measurement.setEnd(new Date());
+            measurement.setStart(Date.from(getStartDate(60).toInstant()));
+            measurement.setSwitchId("SWITCH01");
+            measurement.setMetadata(new HashMap());
+            measurement.setValue(value);
+            measurement.setUnit("Wh");
+            measurement.setType("ENERGY_CONSUMPTION");
+            measurementService.send(List.of(measurement));
 
         } catch (Exception ex){
             log.error("Error while Sending Energy Measurement ", ex);
@@ -31,6 +53,15 @@ public class RandomMeasurementService {
 
         } catch (Exception ex){
             log.error("Error while Sending Voltage Measurement ", ex);
+        }
+    }
+
+    private ZonedDateTime getStartDate(int minute){
+        ZonedDateTime now = LocalDateTime.now().atZone(ZoneId.systemDefault());
+        if(now.getMinute() >= minute){
+            return now.withMinute(minute);
+        } else {
+            return now.withMinute(0);
         }
     }
 }

@@ -4,7 +4,6 @@ import com.ioto.device.client.IotoAuthClient;
 import com.ioto.device.exceptions.DeviceRuntimeException;
 import com.ioto.device.model.CustomDevice;
 import com.ioto.device.model.DeviceAccount;
-import com.ioto.device.model.MeasurementWrapper;
 import com.ioto.device.service.DeviceService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
