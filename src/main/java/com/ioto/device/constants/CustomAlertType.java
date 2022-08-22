@@ -2,7 +2,8 @@ package com.ioto.device.constants;
 
 public enum CustomAlertType {
     HIGH_VOLTAGE("app.notification.device.voltage.high","Voltage High"),
-    ENERGY_CONSUMPTION_CROSSED("app.notification.device.energy.usage.high","Energy Usage Crossed the limit");
+    ENERGY_CONSUMPTION_CROSSED("app.notification.device.energy.usage.high","Energy Usage Crossed the limit"),
+    DEVICE_OVER_USED("app.notification.device.over.used","Device Over Used");
 
     private final String key;
     private final String description;
