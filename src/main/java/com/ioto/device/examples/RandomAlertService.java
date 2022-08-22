@@ -31,8 +31,8 @@ public class RandomAlertService {
     @Qualifier("device")
     private CustomDevice device;
 
-    @Scheduled(cron = "0 */4 * * *") // run every 4 hours
-    public void sendEnergyMeasurement() {
+    @Scheduled(cron = "0 0 */4 * * ?") // run every 4 hours
+    public void sendRandomAlert() {
         try {
             CustomAlertType alertType = CustomAlertType.DEVICE_OVER_USED;
 

@@ -20,7 +20,7 @@ public class IotoMqttCallback implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable throwable) {
-        log.info("Mqtt Connection Lost...");
+        log.debug("Mqtt Connection Lost...");
     }
 
     @Override
