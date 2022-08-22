@@ -7,6 +7,7 @@ import com.ioto.device.model.DeviceAccount;
 import com.ioto.device.model.message.Alert;
 import com.ioto.device.model.message.DeviceStatus;
 import com.ioto.device.model.message.IotoMessage;
+import com.ioto.device.model.message.Notification;
 import com.ioto.device.model.message.Operation;
 import com.ioto.device.service.IotoMessageHandler;
 import org.slf4j.Logger;
@@ -123,6 +124,11 @@ public class WebSocketGateway implements IotoGateway {
         } else {
             logger.warn("WS not connected");
         }
+    }
+
+    @Override
+    public void sendNotification(String deviceId, Notification notification) throws Exception {
+
     }
 
     @Override

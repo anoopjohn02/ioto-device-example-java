@@ -71,11 +71,6 @@ public class DeviceConfiguration {
         return restTemplate;
     }
 
-    @Bean
-    public MeasurementWrapper measurementWrapper(){
-        return new MeasurementWrapper();
-    }
-
     @Bean("device")
     public CustomDevice getDevice() throws DeviceRuntimeException {
         CustomDevice customDevice = deviceService.getDevice(CustomDevice.class);

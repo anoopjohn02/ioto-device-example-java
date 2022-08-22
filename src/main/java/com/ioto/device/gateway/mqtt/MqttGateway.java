@@ -8,6 +8,7 @@ import com.ioto.device.model.DeviceAccount;
 import com.ioto.device.model.message.Alert;
 import com.ioto.device.model.message.DeviceStatus;
 import com.ioto.device.model.message.IotoMessage;
+import com.ioto.device.model.message.Notification;
 import com.ioto.device.model.message.Operation;
 import com.ioto.device.service.IotoMessageHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +87,20 @@ public class MqttGateway implements IotoGateway {
             message.setDeviceId(alert.getDeviceId());
             message.setMessageType(MessageType.ALERT);
             message.setMessage(alert);
+            sendMessage(deviceId, message);
+        } else {
+            log.debug("MQTT not connected");
+        }
+    }
+
+    @Override
+    public void sendNotification(String deviceId, Notification notification) throws Exception {
+        if (isConnected()) {
+            log.debug("Sending Alert {}", deviceId);
+            IotoMessage message = new IotoMessage();
+            message.setDeviceId(notification.getDeviceId());
+            message.setMessageType(MessageType.NOTIFICATION);
+            message.setMessage(notification);
             sendMessage(deviceId, message);
         } else {
             log.debug("MQTT not connected");

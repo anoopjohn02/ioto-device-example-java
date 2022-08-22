@@ -7,6 +7,7 @@ import com.ioto.device.model.CustomerDevices;
 import com.ioto.device.model.Device;
 import com.ioto.device.model.message.Alert;
 import com.ioto.device.model.message.DeviceStatus;
+import com.ioto.device.model.message.Notification;
 import com.ioto.device.model.message.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +86,12 @@ public class DeviceService<M extends Device> {
     public void sendAlert(String deviceId, Alert alert)throws Exception {
         if(isConnected()){
             gatewayService.sendAlert(deviceId, alert);
+        }
+    }
+
+    public void sendNotification(String deviceId, Notification notification)throws Exception {
+        if(isConnected()){
+            gatewayService.sendNotification(deviceId, notification);
         }
     }
 

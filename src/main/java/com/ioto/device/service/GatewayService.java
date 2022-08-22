@@ -3,6 +3,7 @@ package com.ioto.device.service;
 import com.ioto.device.gateway.IotoGateway;
 import com.ioto.device.model.message.Alert;
 import com.ioto.device.model.message.DeviceStatus;
+import com.ioto.device.model.message.Notification;
 import com.ioto.device.model.message.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,10 @@ public class GatewayService {
 
     public void sendAlert(String deviceId, Alert alert)throws Exception {
         gateway.sendAlert(deviceId, alert);
+    }
+
+    public void sendNotification(String deviceId, Notification notification)throws Exception {
+        gateway.sendNotification(deviceId, notification);
     }
 
     public void subscribe(String macAddress, IotoMessageHandler handler)throws Exception {
