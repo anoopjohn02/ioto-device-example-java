@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +29,8 @@ public class RandomNotificationsService {
     @Qualifier("device")
     private CustomDevice device;
 
+    private boolean isUpNotificationSent = false;
+
     @PostConstruct
     public void sendUpNotifications(){
         try{
@@ -40,9 +43,19 @@ public class RandomNotificationsService {
             notification.setType(notificationType.name());
             notification.setDateTime(new Date());
 
-            appNotificationService.sendNotifications(notification, device);
+            isUpNotificationSent = appNotificationService.sendNotifications(notification, device);
+            if(!isUpNotificationSent){
+                log.info("Up notification sending failed");
+            }
         } catch (Exception ex) {
             log.error("Error while Sending up notifications ", ex);
+        }
+    }
+
+    @Scheduled(fixedDelay = 5000)
+    public void execute(){
+        if(!isUpNotificationSent){
+            sendUpNotifications();
         }
     }
 }

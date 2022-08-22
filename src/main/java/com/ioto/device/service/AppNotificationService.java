@@ -18,13 +18,13 @@ public class AppNotificationService<M extends Device>  {
 
     private static final Logger logger = LoggerFactory.getLogger(AppNotificationService.class);
 
-    public void sendAlert(Alert alert, Device device) throws Exception {
+    public boolean sendAlert(Alert alert, Device device) throws Exception {
         logger.info("Sending alert {} to {}", alert.getKey(), device.getMacAddress());
-        deviceService.sendAlert(device.getMacAddress(), alert);
+        return deviceService.sendAlert(device.getMacAddress(), alert);
     }
 
-    public void sendNotifications(Notification notification, Device device) throws Exception {
+    public boolean sendNotifications(Notification notification, Device device) throws Exception {
         logger.info("Sending notification {} to {}", notification.getKey(), device.getMacAddress());
-        deviceService.sendNotification(device.getMacAddress(), notification);
+        return deviceService.sendNotification(device.getMacAddress(), notification);
     }
 }

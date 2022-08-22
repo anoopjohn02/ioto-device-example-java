@@ -48,16 +48,12 @@ public class DeviceService<M extends Device> {
         return device;
     }
 
-    public void sendStatus(M device, Class<M> clazz, Object deviceData)throws Exception {
+    public boolean sendStatus(M device, Class<M> clazz, Object deviceData)throws Exception {
         if(isConnected()){
             gatewayService.sendStatus(getMessage(device, deviceData));
+            return true;
         }
-    }
-
-    public void sendEdgeStatus(Device device, Object deviceData)throws Exception {
-        if(isConnected()){
-            gatewayService.sendEdgeStatus(device.getMacAddress(), getMessage(device, deviceData));
-        }
+        return false;
     }
 
     private DeviceStatus getMessage(Device device, Object deviceData){
@@ -77,22 +73,28 @@ public class DeviceService<M extends Device> {
         }
     }
 
-    public void sendOperation(String deviceId, Operation operation)throws Exception {
+    public boolean sendOperation(String deviceId, Operation operation)throws Exception {
         if(isConnected()){
             gatewayService.sendOperation(deviceId, operation);
+            return true;
         }
+        return false;
     }
 
-    public void sendAlert(String deviceId, Alert alert)throws Exception {
+    public boolean sendAlert(String deviceId, Alert alert)throws Exception {
         if(isConnected()){
             gatewayService.sendAlert(deviceId, alert);
+            return true;
         }
+        return false;
     }
 
-    public void sendNotification(String deviceId, Notification notification)throws Exception {
+    public boolean sendNotification(String deviceId, Notification notification)throws Exception {
         if(isConnected()){
             gatewayService.sendNotification(deviceId, notification);
+            return true;
         }
+        return false;
     }
 
     public boolean isConnected() throws DeviceRuntimeException{
