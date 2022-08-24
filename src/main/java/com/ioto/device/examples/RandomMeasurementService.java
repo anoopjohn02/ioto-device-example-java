@@ -72,7 +72,7 @@ public class RandomMeasurementService {
             measurement.setStart(Date.from(getStartDate(30).toInstant()));
             measurement.setMetadata(new HashMap());
             measurement.setValue(voltage);
-            measurement.setUnit("Wh");
+            measurement.setUnit("V");
             measurement.setType("VOLTAGE_USAGE");
             measurementService.send(List.of(measurement));
             if (voltage > 250){
