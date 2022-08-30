@@ -55,8 +55,17 @@ public class OperationExecutingService implements IotoMessageHandler {
 
     private void executeOperation(Operation operation){
         try{
-            operation.setStatus(OperationStatus.SUCCESS);
-            operation.setFailureReason("SUCCESS");
+            switch (operation.getType()){
+                case SWITCH_OFF:
+                case SWITCH_ON:
+                    operation.setStatus(OperationStatus.FAILED);
+                    operation.setFailureReason("Device Switch Unavailable");
+                    break;
+                case DEVICE_UPDATE:
+                    operation.setStatus(OperationStatus.SUCCESS);
+                    operation.setFailureReason("");
+                    break;
+            }
             coordinator.setOperationExecuted(operation);
             deviceService.sendStatus(coordinator, CustomDevice.class, null);
         } catch (Exception ex) {
