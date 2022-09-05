@@ -67,10 +67,12 @@ public class DeviceService<M extends Device> {
         return message;
     }
 
-    public void subscribe(String deviceId, IotoMessageHandler handler)throws Exception {
+    public boolean subscribe(String deviceId, IotoMessageHandler handler)throws Exception {
         if(isConnected()){
             gatewayService.subscribe(deviceId, handler);
+            return true;
         }
+        return false;
     }
 
     public boolean sendOperation(String deviceId, Operation operation)throws Exception {

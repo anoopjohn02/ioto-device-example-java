@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -34,14 +35,33 @@ public class OperationExecutingService implements IotoMessageHandler {
     @Autowired
     private ModelMapper modelMapper;
 
+    boolean isSubscribed = false;
+
     @PostConstruct
     public void ready()throws Exception{
         subscribe();
     }
 
+    @Scheduled(fixedDelay = 5000)
+    public void execute(){
+        try{
+            if(!isSubscribed){
+                subscribe();
+            }
+            if(!deviceService.isConnected()){
+                isSubscribed = false;
+            }
+        } catch (Exception ex) {
+            logger.error("Error while Subscribing Operation Socket ", ex);
+        }
+    }
+
     private void subscribe()throws Exception{
         logger.info("Subscribing Operation Socket...");
-        deviceService.subscribe(this.macAddress, this);
+        isSubscribed = deviceService.subscribe(this.macAddress, this);
+        if(!isSubscribed){
+            logger.error("SUBSCRIPTION Failed");
+        }
     }
 
     private void checkMessage(IotoMessage message){
