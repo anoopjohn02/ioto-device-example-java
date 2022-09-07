@@ -32,11 +32,12 @@ public class MqttConfig {
     @Autowired
     private IotoMqttCallback callback;
 
-    private IMqttClient instance;
+    private MqttClient instance;
 
     @Bean
     public IMqttClient mqttClient() throws Exception {
         instance = new MqttClient(host, MQTT_PUBLISHER_ID + userName);
+        instance.setTimeToWait(5000);
         return instance;
     }
 

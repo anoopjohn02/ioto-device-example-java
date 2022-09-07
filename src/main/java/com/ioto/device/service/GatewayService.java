@@ -23,6 +23,7 @@ public class GatewayService {
     private String macAddress;
 
     public void sendStatus(DeviceStatus device)throws Exception {
+        logger.debug("Status sending..");
         gateway.sendStatus(macAddress, device);
     }
 

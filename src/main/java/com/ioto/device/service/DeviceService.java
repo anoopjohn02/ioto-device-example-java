@@ -50,6 +50,7 @@ public class DeviceService<M extends Device> {
 
     public boolean sendStatus(M device, Class<M> clazz, Object deviceData)throws Exception {
         if(isConnected()){
+            logger.debug("Status sending.");
             gatewayService.sendStatus(getMessage(device, deviceData));
             return true;
         }

@@ -60,6 +60,7 @@ public class MqttGateway implements IotoGateway {
             message.setMessageType(MessageType.STATUS);
             message.setMessage(device);
             sendMessage(deviceId, message);
+            log.debug("Status sending completed");
         } else {
             log.debug("MQTT not connected");
         }
@@ -121,9 +122,11 @@ public class MqttGateway implements IotoGateway {
     private void sendMessage(String deviceId, IotoMessage payload) throws Exception{
         String json = mapper.writeValueAsString(payload);
         String destination = MESSAGE_URL + "/" + deviceId;
+        log.debug("URL {} json : {}", destination, json);
         MqttMessage mqttMessage = new MqttMessage(json.getBytes());
         mqttMessage.setQos(0);
         mqttMessage.setRetained(true);
         mqttClient.publish(destination, mqttMessage);
+        log.debug("Msg published to {}", destination);
     }
 }

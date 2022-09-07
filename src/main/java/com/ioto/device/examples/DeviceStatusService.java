@@ -34,6 +34,7 @@ public class DeviceStatusService {
         try{
             logger.debug("Sending status to hub");
             sendStatus();
+            logger.debug("Status Sent");
         } catch (Exception ex){
             logger.error("Error occurred while updating device ", ex);
         }
