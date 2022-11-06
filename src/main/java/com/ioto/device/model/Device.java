@@ -12,8 +12,8 @@ import java.util.Date;
 @Setter
 public class Device {
     private String macAddress;
-    private Long userId;
-    private Long companyId;
+    private String userId;
+    private String companyId;
     private Status status;
     private String name;
     private String description;

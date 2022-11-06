@@ -1,5 +1,7 @@
 package com.ioto.device.client;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ioto.device.model.AuthForm;
 import com.ioto.device.model.DeviceAccount;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -23,7 +25,7 @@ public class IotoAuthClient {
 
     private final Logger LOGGER = LoggerFactory.getLogger(IotoAuthClient.class);
 
-    @Value("${ioto.auth.url}")
+    @Value("${ioto.login.url}")
     private String authUrl;
 
     @Value("${deviceId}")
@@ -35,35 +37,28 @@ public class IotoAuthClient {
     @Value("${ioto.client.id}")
     private String clientId;
 
-    @Value("${ioto.client.password}")
-    private String clientPassword;
-
     public DeviceAccount authenicate(){
 
-        HttpHeaders headers = createHeaders();
-        HttpEntity<List<Object>> request = new HttpEntity<>(headers);
+        AuthForm authForm = new AuthForm();
+        authForm.setGrant_type("password");
+        authForm.setClient_id(clientId);
+        authForm.setUsername(macAddress);
+        authForm.setPassword(devicePassword);
 
-        String url = authUrl + "/oauth/token?grant_type=password&username={device_uname}&password={device_pwd}";
-        UriComponents uriComponents =
-                UriComponentsBuilder.fromUriString(url)
-                        .build().expand(macAddress, devicePassword).encode();
-        LOGGER.debug("Accessing URL {}", uriComponents.toUriString());
+        HttpHeaders headers = createHeaders();
+        HttpEntity<AuthForm> request = new HttpEntity<>(authForm, headers);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<DeviceAccount> response = restTemplate.exchange(uriComponents.toUri(), HttpMethod.POST, request, DeviceAccount.class);
+        restTemplate.getMessageConverters().add(new ObjectToUrlEncodedConverter(new ObjectMapper()));
+        ResponseEntity<DeviceAccount> response = restTemplate.exchange(authUrl, HttpMethod.POST, request, DeviceAccount.class);
         return response.getBody();
     }
 
     private HttpHeaders createHeaders() {
-        String auth = clientId + ":" + clientPassword;
-        byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(Charset.forName("US-ASCII")) );
-        String authHeader = "Basic " + new String( encodedAuth );
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", authHeader);
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        httpHeaders.add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
         return httpHeaders;
     }
 }

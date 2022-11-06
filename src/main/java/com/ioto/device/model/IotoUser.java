@@ -9,10 +9,10 @@ import java.util.List;
 @AllArgsConstructor
 public class IotoUser {
 
-    private Long userId;
+    private String userId;
     private String userName;
-    private String type;
-    private Long companyId;
+    private String clientId;
+    private String companyId;
     private String token;
     private boolean companyUser;
     private final List<String> roles;
