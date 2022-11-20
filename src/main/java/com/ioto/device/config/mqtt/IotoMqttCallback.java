@@ -30,6 +30,6 @@ public class IotoMqttCallback implements MqttCallback {
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-        log.info("Delivery Completed...");
+        log.debug("Delivery Completed...");
     }
 }

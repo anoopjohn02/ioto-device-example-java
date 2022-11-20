@@ -9,4 +9,5 @@ public class AuthForm {
     private String password;
     private String client_id;
     private String client_secret;
+    private String refresh_token;
 }

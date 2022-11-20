@@ -40,17 +40,8 @@ public class IotoMqttListener implements IMqttMessageListener {
     private void received(IotoMessage message, String destination){
         if (destination.startsWith(MESSAGE_URL)){
             String deviceId = destination.replace(MESSAGE_URL, "");
-            if(Strings.isNotEmpty(message.getToken())){
-                if(handlers.containsKey(deviceId)){
-                    handlers.get(deviceId).onMessageReceived(message);
-                }
-            } else {
-                try {
-                    log.warn("Anonymous access to {}, payload {} ", destination, mapper.writeValueAsString(message));
-                } catch (JsonProcessingException e) {
-                    log.warn("Anonymous access to {}", destination);
-                    log.error("Payload Can't convert", e);
-                }
+            if(handlers.containsKey(deviceId)){
+                handlers.get(deviceId).onMessageReceived(message);
             }
         } else {
             log.error("Un-known Destination {} ", destination);

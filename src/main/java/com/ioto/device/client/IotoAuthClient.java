@@ -54,6 +54,23 @@ public class IotoAuthClient {
         return response.getBody();
     }
 
+    public DeviceAccount refreshToken(String refreshToken){
+
+        LOGGER.info("Refreshing Token");
+        AuthForm authForm = new AuthForm();
+        authForm.setGrant_type("refresh_token");
+        authForm.setClient_id(clientId);
+        authForm.setRefresh_token(refreshToken);
+
+        HttpHeaders headers = createHeaders();
+        HttpEntity<AuthForm> request = new HttpEntity<>(authForm, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new ObjectToUrlEncodedConverter(new ObjectMapper()));
+        ResponseEntity<DeviceAccount> response = restTemplate.exchange(authUrl, HttpMethod.POST, request, DeviceAccount.class);
+        return response.getBody();
+    }
+
     private HttpHeaders createHeaders() {
 
         HttpHeaders httpHeaders = new HttpHeaders();
